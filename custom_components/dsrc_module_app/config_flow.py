@@ -15,13 +15,18 @@ from homeassistant.const import (
     CONF_HOST,
     CONF_PASSWORD,
     CONF_PORT,
-    CONF_TOPIC,
     CONF_USERNAME,
 )
 from homeassistant.core import HomeAssistant
 from homeassistant.exceptions import HomeAssistantError
 
-from .const import DEFAULT_HOST, DEFAULT_PORT, DISCOVERY_TIMEOUT_SECONDS, DOMAIN
+from .const import (
+    CONF_TOPIC,
+    DEFAULT_HOST,
+    DEFAULT_PORT,
+    DISCOVERY_TIMEOUT_SECONDS,
+    DOMAIN,
+)
 
 STEP_USER_DATA_SCHEMA = vol.Schema(
     {

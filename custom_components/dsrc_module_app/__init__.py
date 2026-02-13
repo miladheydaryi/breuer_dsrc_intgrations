@@ -11,14 +11,19 @@ from homeassistant.const import (
     CONF_HOST,
     CONF_PASSWORD,
     CONF_PORT,
-    CONF_TOPIC,
     CONF_USERNAME,
     Platform,
 )
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.dispatcher import async_dispatcher_send
 
-from .const import DEFAULT_HOST, DEFAULT_PORT, DOMAIN, SIGNAL_PAYLOAD_UPDATED
+from .const import (
+    CONF_TOPIC,
+    DEFAULT_HOST,
+    DEFAULT_PORT,
+    DOMAIN,
+    SIGNAL_PAYLOAD_UPDATED
+)
 from .dsrc_api import DsrcModuleApi
 
 _LOGGER = logging.getLogger(__name__)
