@@ -78,19 +78,19 @@ async def _discover_topics(
             username=username,
             password=password,
         ) as client:
-            async with client.unfiltered_messages() as messages:
-                await client.subscribe("#")
-                while True:
-                    remaining = deadline - loop.time()
-                    if remaining <= 0:
-                        break
-                    try:
-                        message = await asyncio.wait_for(
-                            messages.__anext__(), timeout=remaining
-                        )
-                    except asyncio.TimeoutError:
-                        break
-                    topics[message.topic] = message.payload
+            await client.subscribe("#")
+            messages = client.messages
+            while True:
+                remaining = deadline - loop.time()
+                if remaining <= 0:
+                    break
+                try:
+                    message = await asyncio.wait_for(
+                        messages.__anext__(), timeout=remaining
+                    )
+                except asyncio.TimeoutError:
+                    break
+                topics[message.topic] = message.payload
     except MqttError as err:
         raise CannotConnect from err
 

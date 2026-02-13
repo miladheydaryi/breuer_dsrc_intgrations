@@ -57,7 +57,7 @@ class DsrcModuleApi:
             username=self._username,
             password=self._password,
         )
-        await client.connect()
+        await client.__aenter__()
         if self._topic:
             await client.subscribe(self._topic)
         listener_task = asyncio.create_task(self._listen(client))
@@ -73,26 +73,25 @@ class DsrcModuleApi:
         except asyncio.CancelledError:
             pass
         try:
-            await self._runtime.client.disconnect()
+            await self._runtime.client.__aexit__(None, None, None)
         except MqttError as err:
             _LOGGER.debug("Error disconnecting MQTT client: %s", err)
 
     async def _listen(self, client: Client) -> None:
         """Listen for MQTT messages and store latest JSON key values."""
-        async with client.unfiltered_messages() as messages:
-            async for message in messages:
-                payload = message.payload.decode(errors="replace")
-                try:
-                    data = json.loads(payload)
-                except json.JSONDecodeError:
-                    continue
-                if not isinstance(data, dict):
-                    continue
-                if self._runtime is None:
-                    continue
-                for key, value in data.items():
-                    self._runtime.last_values[str(key)] = str(value)
-                self._runtime.last_topic = message.topic
-                self._runtime.last_received = datetime.now(timezone.utc)
-                if self._on_update is not None:
-                    self._on_update()
+        async for message in client.messages:
+            payload = message.payload.decode(errors="replace")
+            try:
+                data = json.loads(payload)
+            except json.JSONDecodeError:
+                continue
+            if not isinstance(data, dict):
+                continue
+            if self._runtime is None:
+                continue
+            for key, value in data.items():
+                self._runtime.last_values[str(key)] = str(value)
+            self._runtime.last_topic = message.topic
+            self._runtime.last_received = datetime.now(timezone.utc)
+            if self._on_update is not None:
+                self._on_update()
