@@ -7,7 +7,7 @@ import json
 from typing import Any
 
 import voluptuous as vol
-from asyncio_mqtt import Client, MqttError
+from aiomqtt import Client, MqttError
 
 from homeassistant import config_entries
 from homeassistant.config_entries import ConfigFlowResult

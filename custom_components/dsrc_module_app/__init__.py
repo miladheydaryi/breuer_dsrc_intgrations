@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import logging
 
-from asyncio_mqtt import MqttError
+from aiomqtt import MqttError
 
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import (

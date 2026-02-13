@@ -9,7 +9,7 @@ from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from typing import Callable
 
-from asyncio_mqtt import Client, MqttError
+from aiomqtt import Client, MqttError
 
 _LOGGER = logging.getLogger(__name__)
 
