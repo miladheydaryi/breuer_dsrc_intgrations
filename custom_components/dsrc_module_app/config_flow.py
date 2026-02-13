@@ -90,7 +90,7 @@ async def _discover_topics(
                     )
                 except asyncio.TimeoutError:
                     break
-                topics[message.topic] = message.payload
+                topics[str(message.topic)] = message.payload
     except MqttError as err:
         raise CannotConnect from err
 
